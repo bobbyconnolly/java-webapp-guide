@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building Your First Java Web Application</title>
+    <style>
+      :root {
+        --primary: #3498db;
+        --secondary: #2ecc71;
+        --warning: #f39c12;
+        --danger: #e74c3c;
+        --light: #f8f9fa;
+        --dark: #2c3e50;
+        --code-bg: #f5f5f5;
+        --tip-bg: #e3f2fd;
+        --warning-bg: #fff3e0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: #f5f5f5;
+      }
+
+      h1, h2, h3, h4 {
+        color: var(--dark);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--primary);
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        margin-bottom: 1.2rem;
+      }
+
+      .section {
+        background: white;
+        padding: 2rem;
+        margin: 2rem 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .step {
+        background: white;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--primary);
+      }
+
+      .step-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .step-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+
+      .code-ref {
+        font-family: "Consolas", monospace;
+        background: var(--code-bg);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-size: 0.9rem;
+      }
+
+      .tip, .note, .warning {
+        padding: 1rem;
+        margin: 1.5rem 0;
+        border-radius: 5px;
+      }
+
+      .tip {
+        background: var(--tip-bg);
+        border-left: 4px solid var(--primary);
+      }
+
+      .note {
+        background: #f8f9fa;
+        border-left: 4px solid #6c757d;
+      }
+
+      .warning {
+        background: var(--warning-bg);
+        border-left: 4px solid var(--warning);
+      }
+
+      .image-container {
+        text-align: center;
+        margin: 1.5rem 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      ul, ol {
+        padding-left: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+      }
+
+      th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f8f9fa;
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #222;
+          color: #f8f9fa;
+        }
+        .section, .step {
+          background: #333;
+        }
+        .code-ref {
+          background: #2d2d2d;
+        }
+        h1, h2, h3, h4 {
+          color: #f8f9fa;
+        }
+        .note {
+          background: #444;
+        }
+        th, td {
+          border-bottom: 1px solid #444;
+        }
+        th {
+          background-color: #444;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Building Your First Java Web Application</h1>
+    
+    <div class="section">
+      <h2>Overview</h2>
+      <p>In this lab, we'll build a simple calculator web application using Java EE technologies. This will demonstrate the core concepts of Java web development including:</p>
+      <ul>
+        <li>Setting up a Java EE project with IntelliJ IDEA Ultimate</li>
+        <li>Implementing the Model-View-Controller (MVC) pattern</li>
+        <li>Using Servlets for controllers</li>
+        <li>Using JSP (JavaServer Pages) for views</li>
+        <li>Creating Java classes for models</li>
+        <li>Deploying to Apache Tomcat</li>
+      </ul>
+      <p>By the end of this lab, you'll have created a functional calculator web application and understand the fundamentals of Java web development.</p>
+    </div>
+
+    <div class="section">
+      <h2>Prerequisites</h2>
+      <ul>
+        <li>IntelliJ IDEA Ultimate (not Community Edition)</li>
+        <li>JDK (Java Development Kit) 11 or newer</li>
+        <li>Apache Tomcat 9.x or newer</li>
+      </ul>
+
+      <div class="warning">
+        <strong>Important:</strong> IntelliJ IDEA Community Edition does not include the Java EE features needed for this lab. Make sure you're using the Ultimate edition, which is available with a free student license through the <a href="https://www.jetbrains.com/community/education/" target="_blank">JetBrains Education program</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Step-By-Step Guide</h2>
+      
+      <div class="step">
+        <div class="step-title"><span class="step-number">1</span> Create a New Project</div>
+        <ol>
+          <li>Open IntelliJ IDEA Ultimate</li>
+          <li>Click "New Project"</li>
+          <li>From the left panel, select "Jakarta EE"</li>
+          <li>Configure the project:
+            <ul>
+              <li>Name: <code class="code-ref">SimpleCalculator</code></li>
+              <li>Location: Choose your preferred directory</li>
+              <li>Build system: Maven (recommended for this lab)</li>
+              <li>JDK: Select your installed JDK</li>
+              <li>Language: Java</li>
+            </ul>
+          </li>
+          <li>Under "Additional Libraries and Frameworks":
+            <ul>
+              <li>Check "Web Application"</li>
+              <li>Select "Jakarta EE 11" or later</li>
+              <li>Make sure "Create web.xml" is checked</li>
+            </ul>
+          </li>
+          <li>In the Dependencies section, select:
+            <ul>
+              <li>Servlet (should be checked by default)</li>
+              <li>Web Profile (provides JSP and other web-related specifications)</li>
+            </ul>
+          </li>
+          <li>Click "Create"</li>
+        </ol>
+
+        <div class="note">
+          <strong>Note:</strong> If you don't see "Jakarta EE" in the left panel, look for "Java Enterprise" instead, which was the name in older versions of IntelliJ.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-title"><span class="step-number">2</span> Configure Tomcat</div>
+        <p>Next, we need to configure Tomcat to run our application:</p>
+        <ol>
+          <li>If you haven't already, download Apache Tomcat from the <a href="https://tomcat.apache.org/download-90.cgi" target="_blank">official website</a> and extract it to a folder on your computer</li>
+          <li>In IntelliJ, click on the dropdown menu in the top-right toolbar (near the Run button)</li>
+          <li>Select "Edit Configurations..."</li>
+          <li>Click the "+" button in the top-left corner</li>
+          <li>Select "Tomcat Server" → "Local"</li>
+          <li>Name it "Tomcat for SimpleCalculator"</li>
+          <li>In the main configuration tab:
+            <ul>
+              <li>Set "Tomcat Home" to your Tomcat installation directory</li>
+              <li>Set "Tomcat base directory" to the same as Tomcat Home</li>
+            </ul>
+          </li>
+          <li>In the "Deployment" tab:
+            <ul>
+              <li>Click the "+" button</li>
+              <li>Select "Artifact..."</li>
+              <li>Choose "SimpleCalculator:war exploded"</li>
+              <li>Set the "Application context" to "/calc"</li>
+            </ul>
+          </li>
+          <li>Click "Apply" and "OK"</li>
+        </ol>
+
+        <div class="tip">
+          <strong>Tip:</strong> Using "war exploded" during development gives you faster deployment and easier debugging than using the compressed "war" format.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-title"><span class="step-number">3</span> Create the Model</div>
+        <p>Let's start by creating our Calculator model class:</p>
+        <ol>
+          <li>Right-click on the "src/main/java" directory in the Project Explorer</li>
+          <li>Select "New" → "Package"</li>
+          <li>Name it "com.example.calculator.model"</li>
+          <li>Right-click on the new package and select "New" → "Java Class"</li>
+          <li>Name it "Calculator"</li>
+          <li>Implement the Calculator class with methods for basic arithmetic operations</li>
+        </ol>
+
+        <div class="note">
+          <strong>The Model:</strong> In MVC architecture, the Model represents the data and business logic of your application. Our Calculator class handles the core calculation functionality.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-title"><span class="step-number">4</span> Create the Controller (Servlet)</div>
+        <p>Now, let's create the CalculatorServlet that will handle user requests:</p>
+        <ol>
+          <li>Create a new package "com.example.calculator.controller"</li>
+          <li>Right-click on the package and select "New" → "Java Class"</li>
+          <li>Name it "CalculatorServlet"</li>
+          <li>Implement the CalculatorServlet class that extends HttpServlet</li>
+          <li>Add the @WebServlet annotation to map the servlet to a URL pattern</li>
+          <li>Override the doGet and doPost methods</li>
+        </ol>
+
+        <div class="note">
+          <strong>The Controller:</strong> In MVC architecture, the Controller handles user input, interacts with the Model, and determines which View to render. Our CalculatorServlet receives form submissions, processes the calculation, and forwards to the JSP.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-title"><span class="step-number">5</span> Create the View (JSP)</div>
+        <p>Finally, let's create the JSP page that will display the calculator interface:</p>
+        <ol>
+          <li>Navigate to "src/main/webapp"</li>
+          <li>Open the existing index.jsp file or create a new one</li>
+          <li>Implement the calculator interface with HTML form and styling</li>
+        </ol>
+
+        <div class="note">
+          <strong>The View:</strong> In MVC architecture, the View presents the data to the user. Our JSP page combines HTML, CSS, and embedded Java to create a dynamic user interface.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-title"><span class="step-number">6</span> Run the Application</div>
+        <p>Now that we have all the components, let's run our application:</p>
+        <ol>
+          <li>Click the green "Run" button in the toolbar (or press Shift+F10)</li>
+          <li>IntelliJ will build your project, deploy it to Tomcat, and start the server</li>
+          <li>Your browser should automatically open to the application URL (http://localhost:8080/calc/)</li>
+          <li>Test the calculator by entering numbers and operations</li>
+        </ol>
+
+        <div class="warning">
+          <strong>Troubleshooting:</strong> If your application doesn't start correctly, check the IntelliJ console for error messages. Common issues include:
+          <ul>
+            <li>Tomcat not configured correctly</li>
+            <li>Application context path issues</li>
+            <li>Java or dependency version conflicts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Understanding the Technology Stack</h2>
+      
+      <h3>Jakarta EE (formerly Java EE)</h3>
+      <p>Jakarta EE is a set of specifications that extend Java SE with enterprise features such as web application development, distributed computing, and more. Key components we're using include:</p>
+      <ul>
+        <li><strong>Servlets:</strong> Java classes that handle HTTP requests and responses</li>
+        <li><strong>JSP (JavaServer Pages):</strong> Technology that allows embedding Java code in HTML pages</li>
+      </ul>
+
+      <h3>MVC Architecture</h3>
+      <p>We're implementing the Model-View-Controller pattern:</p>
+      <ul>
+        <li><strong>Model (Calculator.java):</strong> Contains the application data and business logic</li>
+        <li><strong>View (index.jsp):</strong> Renders the data as a user interface</li>
+        <li><strong>Controller (CalculatorServlet.java):</strong> Handles user input and coordinates between model and view</li>
+      </ul>
+
+      <h3>How JSP Works</h3>
+      <p>JSP pages are essentially HTML files with embedded Java code:</p>
+      <ul>
+        <li>When a JSP page is requested for the first time, the server converts it to a servlet behind the scenes</li>
+        <li>This servlet generates the dynamic HTML that is sent to the browser</li>
+        <li>JSP elements include:
+          <ul>
+            <li><code class="code-ref">&lt;% ... %&gt;</code> - Scriptlets (Java code)</li>
+            <li><code class="code-ref">&lt;%= ... %&gt;</code> - Expressions (output values)</li>
+            <li><code class="code-ref">${...}</code> - EL (Expression Language) expressions</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Common Issues & Solutions</h2>
+      
+      <h3>Project Setup Issues</h3>
+      <ul>
+        <li><strong>Missing Jakarta EE option:</strong> Make sure you're using IntelliJ IDEA Ultimate, not Community Edition</li>
+        <li><strong>Dependency errors:</strong> Check that your Maven dependencies are correctly specified in pom.xml</li>
+      </ul>
+
+      <h3>Runtime Issues</h3>
+      <ul>
+        <li><strong>404 errors:</strong> Check that your URL patterns in @WebServlet annotations match your form action URLs</li>
+        <li><strong>500 errors:</strong> Look for exceptions in the server logs, often caused by errors in your Java code</li>
+        <li><strong>Blank page:</strong> Check for JSP compilation errors or missing forwards in your servlet</li>
+      </ul>
+
+      <h3>Tomcat Issues</h3>
+      <ul>
+        <li><strong>Tomcat not starting:</strong> Verify your Tomcat Home and Base Directory settings</li>
+        <li><strong>Port conflicts:</strong> Another application might be using port 8080, check the server logs</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Next Steps</h2>
+      <p>Now that you've built a basic calculator, you can extend it with additional features:</p>
+      <ul>
+        <li>Add more complex operations (square root, exponents, etc.)</li>
+        <li>Implement a calculation history</li>
+        <li>Improve the UI with CSS frameworks</li>
+        <li>Add error validation and improved user feedback</li>
+        <li>Integrate with a database to store calculations</li>
+      </ul>
+      
+      <p>These enhancements will help you build on the fundamental skills you've learned and prepare you for developing more complex web applications.</p>
+    </div>
+
+    <div class="section">
+      <h2>Conclusion</h2>
+      <p>Congratulations! You've successfully created a Java web application using the MVC pattern. You've learned how to:</p>
+      <ul>
+        <li>Set up a Java EE project in IntelliJ IDEA</li>
+        <li>Implement the Model-View-Controller architecture</li>
+        <li>Use servlets as controllers</li>
+        <li>Create JSP pages for views</li>
+        <li>Deploy and run your application on Tomcat</li>
+      </ul>
+      
+      <p>These skills form the foundation of Java web development and will serve you well as you continue to learn and build more complex applications.</p>
+
+      <div class="tip">
+        <strong>Remember:</strong> The key to becoming proficient in web development is practice. Try modifying this application, adding new features, or creating new projects from scratch to reinforce what you've learned.
+      </div>
+    </div>
+  </body>
+</html>
